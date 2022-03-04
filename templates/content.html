@@ -13,7 +13,7 @@
                         um {{ dep.real_datetime.strftime('%H:%M') }}{% if dep.delay > 0 %}<span class="delay">+{{ dep.delay }}</span>{% endif %}
                     </time>
                 </td>
-                <td>nach <a href="/dest/{{ dep.serving_line.dest_id }}">{{ dep.serving_line.direction|hypen|safe }}</a></td>
+                <td><a href="/dest/{{ dep.serving_line.dest_id }}">nach {{ dep.serving_line.direction|hypen|safe }}</a></td>
             </tr>
         {% endfor %}
         <tfoot>
