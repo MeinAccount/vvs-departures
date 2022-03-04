@@ -1,0 +1,31 @@
+{% if stop is none %}
+    <h1>Keine Abfahrten gefunden</h1>
+{% else %}
+    <h1>Abfahrten in {{ stop|hypen|safe }}</h1>
+    <table>
+        {% for dep in deps %}
+            <tr id="row{{ loop.index }}">
+                <td>
+                    <span class="symbol" data-type="{{ dep.serving_line.name }}">{{ dep.serving_line.symbol }}</span>
+                </td>
+                <td>
+                    <time datetime="{{ dep.real_datetime }}">
+                        um {{ dep.real_datetime.strftime('%H:%M') }}{% if dep.delay > 0 %}<span class="delay">+{{ dep.delay }}</span>{% endif %}
+                    </time>
+                </td>
+                <td>nach <a href="/dest/{{ dep.serving_line.dest_id }}">{{ dep.serving_line.direction|hypen|safe }}</a></td>
+            </tr>
+        {% endfor %}
+        <tfoot>
+            <tr>
+                <td colspan="3">
+                    <a href="/dest/{{ dest_str }}?limit={{ limit+20 }}#row{{ limit }}">Mehr Laden</a>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+{% endif %}
+</main>
+</div>
+</body>
+</html>

@@ -1,0 +1,7 @@
+venv/
+__pycache__/
+*~
+
+static/.webassets-cache/
+static/screen.css
+buttons.csv

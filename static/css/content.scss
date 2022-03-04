@@ -1,0 +1,109 @@
+h1 {
+  text-align: center;
+  margin: 20px;
+}
+
+main {
+  &:empty::after {
+    $size: 100px;
+
+    content: " ";
+    display: block;
+    width: $size;
+    height: $size;
+    margin: $size/2 auto;
+    border-radius: 50%;
+    border: $size/10 solid #000;
+    border-color: #000 transparent #000 transparent;
+    animation: rotate-full 1.6s linear infinite;
+  }
+
+  table {
+    border-collapse: collapse;
+    border: none;
+
+    tr {
+      transition: 0.1s ease background-color;
+
+      &:nth-child(2n) {
+        background-color: lightgray;
+      }
+      &:hover {
+        background-color: rgb(255, 228, 179);
+      }
+
+      td {
+        padding: 10px 0;
+        margin-bottom: 10px;
+        white-space: nowrap;
+        vertical-align: top;
+
+        &:first-child {
+          padding-left: 5px;
+          padding-right: 10px;
+          vertical-align: middle;
+        }
+
+        &:last-child {
+          width: 100%;
+          white-space: normal;
+
+          padding-left: 5px;
+          padding-right: 5px;
+        }
+      }
+    }
+  }
+
+  tfoot td {
+    text-align: center;
+    text-decoration: underline;
+  }
+
+  .delay {
+    background: #e50e0e;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 0 3px;
+
+    font-size: 0.7rem;
+    vertical-align: top;
+    margin-left: -1px;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+}
+
+@keyframes rotate-full {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.symbol {
+  background-color: black;
+  border-radius: 5px;
+  padding: 5px 2px;
+  display: inline-block;
+  width: 100%;
+
+  text-align: center;
+  color: white;
+  font-weight: bold;
+
+  &[data-type="S-Bahn"] {
+    background-color: #5d864d;
+  }
+  &[data-type="Stadtbahn"] {
+    background-color: #004f9f;
+  }
+  &[data-type="Bus"] {
+    background-color: #ed1b24;
+  }
+}

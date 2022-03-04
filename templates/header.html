@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <title>SSB</title>
+  {% assets "css" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}" />
+  {% endassets %}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <div id="wrapper">
+    <aside>
+      <nav>
+        {% for dest,name in dest_buttons %}
+          <a href="/dest/{{ dest }}">{{ name }}</a>
+        {% endfor %}
+      </nav>
+    </aside>
+    <main>
