@@ -11,7 +11,7 @@ assets.register('css', Bundle(
     'css/*.scss', filters='pyscss,cssmin', output='screen.css'))
 
 dic = Pyphen(lang='de_DE')
-with open('buttons.csv') as file:
+with open('config/buttons.csv') as file:
     dest_buttons = [line.rstrip().split(';') for line in file]
 
 
