@@ -1,6 +1,6 @@
 h1 {
   text-align: center;
-  margin: 20px;
+  margin: 0 20px 10px;
 }
 
 main {
@@ -55,9 +55,12 @@ main {
     }
   }
 
-  tfoot td {
+  tfoot tr {
     text-align: center;
-    text-decoration: underline;
+
+    a {
+      text-decoration: underline;
+    }
   }
 
   .delay {
