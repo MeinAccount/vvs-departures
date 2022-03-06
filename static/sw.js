@@ -1,7 +1,9 @@
 self.addEventListener("install", event => {
     self.skipWaiting();
     event.waitUntil(caches.open("vvs-HASH")
-        .then(cache => cache.addAll(["/static/screen.css?HASH", "/header", "/offline"])))
+        .then(cache => cache.addAll(["/static/screen.css?HASH", "/static/manifest.json",
+            "/static/icons/favicon.ico", "/static/icons/icon-192x192.png", "/static/icons/icon-256x256.png",
+            "/header", "/offline"])))
 });
 
 self.addEventListener("activate", event => event.waitUntil(
