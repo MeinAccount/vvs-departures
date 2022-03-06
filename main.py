@@ -30,6 +30,13 @@ def hypen(s):
     return dic.inserted(s, '&shy;')
 
 
+@app.template_filter()
+def joinDE(l):
+    if len(l) == 1:
+        return l[0]
+    return ', '.join(l[:-1]) + ' und ' + l[-1]
+
+
 @app.route("/")
 @app.route("/dest/<dest_str>")
 def hello_world(dest_str=None):
@@ -50,7 +57,8 @@ def content(dest_str=None):
 
     deps.sort(key=lambda dep: dep.real_datetime)
     return render_template('content.html', deps=deps, now=datetime.datetime.now(),
-                           dest_str=dest_str, limit=limit)
+                           dest_str=dest_str, limit=limit,
+                           stops=sorted(set([dep.stop_name for dep in deps])))
 
 
 @app.route("/header")
