@@ -91,7 +91,9 @@ main {
   border-radius: 5px;
   padding: 5px 2px;
   display: inline-block;
+
   width: 100%;
+  min-width: 4rem;
 
   text-align: center;
   color: white;

@@ -11,7 +11,8 @@
             "module": "flask",
             "env": {
                 "FLASK_APP": "main.py",
-                "FLASK_ENV": "development"
+                "FLASK_ENV": "development",
+                "VVS_BUTTONS": "de:08111:6332,de:08111:6333;Bad Cannstatt"
             },
             "args": [
                 "run",

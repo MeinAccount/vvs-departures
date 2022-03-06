@@ -1,0 +1,35 @@
+#reload {
+  display: block;
+  position: relative;
+
+  height: 200px;
+  width: 200px;
+  margin: 30px auto;
+  padding: 0.25em;
+
+  &:before {
+    content: "";
+    display: block;
+    height: 150px;
+    width: 150px;
+    transform: rotate(45deg);
+
+    border-color: transparent black black black;
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 12px;
+  }
+  &:after {
+    content: "";
+    display: block;
+    position: absolute;
+    height: 0;
+    width: 0;
+    top: -7px;
+    left: 92px;
+
+    border-color: transparent transparent transparent black;
+    border-style: solid;
+    border-width: 20px 0 20px 30px;
+  }
+}

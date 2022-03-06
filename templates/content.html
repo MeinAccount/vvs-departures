@@ -1,7 +1,7 @@
-{% if stop is none %}
+{% if deps|length == 0 %}
     <h1>Keine Abfahrten gefunden</h1>
 {% else %}
-    <h1>Abfahrten in {{ stop|hypen|safe }}</h1>
+    <h1>Abfahrten in {{ deps[0].stop_name|hypen|safe }}</h1>
     <table>
         {% for dep in deps %}
             <tr id="row{{ loop.index }}">
@@ -27,5 +27,10 @@
 {% endif %}
 </main>
 </div>
+<script>
+    if ('serviceWorker' in navigator && 'TransformStream' in window) {
+        navigator.serviceWorker.register('/sw.js');
+    }
+</script>
 </body>
 </html>

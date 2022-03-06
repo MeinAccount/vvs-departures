@@ -1,18 +1,28 @@
-from flask import Flask, request, render_template, stream_with_context
+from flask import Flask, request, render_template, stream_with_context, send_file
 from flask_assets import Environment, Bundle
 
 import datetime
+import os
 from pyphen import Pyphen
 from vvspy import get_departures
 
+
+def hashreplace(_in, out, **kw):
+    out.write(_in.read().replace('HASH', bundleCSS.get_version()))
+
+
 app = Flask(__name__)
 assets = Environment(app)
-assets.register('css', Bundle(
+
+bundleCSS = assets.register('css', Bundle(
     'css/*.scss', filters='pyscss,cssmin', output='screen.css'))
+bundleCSS.build()
+assets.register('sw', Bundle('sw.js', filters=hashreplace,
+                depends='css/*.scss', output='sw.min.js')).build()  # TODO also depends on templates
 
 dic = Pyphen(lang='de_DE')
-with open('config/buttons.csv') as file:
-    dest_buttons = [line.rstrip().split(';') for line in file]
+dest_buttons = [line.strip().split(';')
+                for line in os.environ.get('VVS_BUTTONS', '').splitlines()]
 
 
 @app.template_filter()
@@ -23,17 +33,36 @@ def hypen(s):
 @app.route("/")
 @app.route("/dest/<dest_str>")
 def hello_world(dest_str=None):
+    def generate():
+        yield render_template('header.html', dest_buttons=dest_buttons)
+        yield content(dest_str=dest_str)
+    return app.response_class(stream_with_context(generate()))
+
+
+@app.route("/content/<dest_str>")
+def content(dest_str=None):
     limit = request.args.get('limit')
     limit = int(limit) if limit is not None and limit.isdigit() else 20
 
-    def generate():
-        yield render_template('header.html', dest_buttons=dest_buttons)
-        deps = []
-        for dest in (dest_str or "de:08111:6332,de:08111:6333").split(","):
-            deps.extend(get_departures(dest, limit=limit))
+    deps = []
+    for dest in (dest_str or "de:08111:6332,de:08111:6333").split(","):
+        deps.extend(get_departures(dest, limit=limit))
 
-        deps.sort(key=lambda dep: dep.real_datetime)
-        yield render_template('content.html', deps=deps, now=datetime.datetime.now(),
-                              dest_str=dest_str, limit=limit,
-                              stop=deps[0].stop_name if len(deps) > 0 else None)
-    return app.response_class(stream_with_context(generate()))
+    deps.sort(key=lambda dep: dep.real_datetime)
+    return render_template('content.html', deps=deps, now=datetime.datetime.now(),
+                           dest_str=dest_str, limit=limit)
+
+
+@app.route("/header")
+def header():
+    return render_template('header.html', dest_buttons=dest_buttons)
+
+
+@app.route("/offline")
+def offline():
+    return render_template('offline.html')
+
+
+@app.route("/sw.js")
+def sw():
+    return send_file('static/sw.min.js')

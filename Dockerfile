@@ -8,3 +8,6 @@ RUN pip install -r requirements.txt
 
 COPY . /app
 CMD [ "gunicorn", "--bind", "0.0.0.0:8000", "-k", "gevent", "main:app" ]
+
+ENV FLASK_APP=main.py
+RUN flask assets build

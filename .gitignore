@@ -4,4 +4,4 @@ __pycache__/
 
 static/.webassets-cache/
 static/screen.css
-config/
+static/sw.min.js
