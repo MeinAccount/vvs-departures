@@ -1,14 +1,14 @@
 self.addEventListener("install", event => {
     self.skipWaiting();
-    event.waitUntil(caches.open("vvs-HASH")
-        .then(cache => cache.addAll(["/static/screen.css?HASH", "/static/manifest.json",
+    event.waitUntil(caches.open("vvs-SW_HASH")
+        .then(cache => cache.addAll(["/static/screen.css?CSS_HASH", "/static/manifest.json",
             "/static/icons/favicon.ico", "/static/icons/icon-192x192.png", "/static/icons/icon-256x256.png",
             "/header", "/offline"])))
 });
 
 self.addEventListener("activate", event => event.waitUntil(
     caches.keys().then(cacheNames => Promise.all(cacheNames
-        .filter(name => name != "vvs-HASH")
+        .filter(name => name != "vvs-SW_HASH")
         .map(cacheName => caches.delete(cacheName))))));
 
 

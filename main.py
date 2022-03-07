@@ -2,13 +2,26 @@ from flask import Flask, request, render_template, stream_with_context, send_fil
 from flask_assets import Environment, Bundle
 
 import datetime
+import hashlib
 import os
 from pyphen import Pyphen
 from vvspy import get_departures
 
 
 def hashreplace(_in, out, **kw):
-    out.write(_in.read().replace('HASH', bundleCSS.get_version()))
+    # compute hash for sw based on main.py, css hash, environment and buttons
+    hash = hashlib.md5()
+    hash.update(bundleCSS.get_version().encode('utf-8'))
+    hash.update(os.environ.get('VVS_BUTTONS', '').encode('utf-8'))
+    for filename in os.listdir('templates'):
+        with open('templates/' + filename, 'rb') as f:
+            hash.update(f.read())
+    with open('main.py', 'rb') as f:
+        hash.update(f.read())
+
+    out.write(_in.read()
+              .replace('CSS_HASH', bundleCSS.get_version())
+              .replace('SW_HASH', hash.hexdigest()[0:6]))
 
 
 app = Flask(__name__)
@@ -18,7 +31,7 @@ bundleCSS = assets.register('css', Bundle(
     'css/*.scss', filters='pyscss,cssmin', output='screen.css'))
 bundleCSS.build()
 assets.register('sw', Bundle('sw.js', filters=hashreplace,
-                depends='css/*.scss', output='sw.min.js')).build()  # TODO also depends on templates
+                depends='css/*.scss', output='sw.min.js')).build()  # but also depends on templates
 
 dic = Pyphen(lang='de_DE')
 dest_buttons = [line.strip().split(';')
